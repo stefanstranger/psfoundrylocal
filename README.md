@@ -190,6 +190,7 @@ Start-FoundryLocalService -Confirm
 ```
 
 The following cmdlets support `-WhatIf` and `-Confirm`:
+
 - `Save-FoundryLocalModel`
 - `Start-FoundryLocalModel`
 - `Stop-FoundryLocalModel`

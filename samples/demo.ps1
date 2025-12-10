@@ -12,14 +12,10 @@
     Runs the full demonstration of psfoundrylocal module capabilities.
 #>
 
-[CmdletBinding()]
-param()
-
 # Import the module
 Import-Module psfoundrylocal -Force
 
 #region Service Management
-
 # Check service status
 Write-Host '=== Service Status ===' -ForegroundColor Cyan
 $status = Get-FoundryLocalService
@@ -35,11 +31,9 @@ else {
         Write-Host ('Service started at {0}' -f $startResult.Endpoint) -ForegroundColor Green
     }
 }
-
 #endregion
 
 #region Model Discovery
-
 # List all available models
 Write-Host "`n=== Available Models ===" -ForegroundColor Cyan
 $models = Get-FoundryLocalModel
@@ -59,11 +53,9 @@ $chatModels | Format-Table Alias, Device, Task -AutoSize
 Write-Host "`n=== Model Info: phi-4-mini ===" -ForegroundColor Cyan
 $modelInfo = Get-FoundryLocalModelInfo -Model 'phi-4-mini'
 $modelInfo | Format-List
-
 #endregion
 
 #region Cache Management
-
 # Check cache location
 Write-Host "`n=== Cache Location ===" -ForegroundColor Cyan
 $cacheLocation = Get-FoundryLocalCacheLocation
@@ -79,11 +71,9 @@ if ($cachedModels) {
 else {
     Write-Host 'No models cached locally.' -ForegroundColor Yellow
 }
-
 #endregion
 
 #region Model Loading
-
 # Load a model into the service
 Write-Host "`n=== Loading Model ===" -ForegroundColor Cyan
 $loadParams = @{
@@ -110,11 +100,9 @@ if ($loadedModels.Models) {
 Write-Host "`n=== Unloading Model ===" -ForegroundColor Cyan
 $unloadResult = Stop-FoundryLocalModel -Model 'phi-4-mini'
 Write-Host ('Unload result: {0}' -f $unloadResult.Message)
-
 #endregion
 
 #region Pipeline Examples
-
 # Pipeline: Get GPU models larger than 2GB
 Write-Host "`n=== GPU Models > 2GB ===" -ForegroundColor Cyan
 Get-FoundryLocalModel -Filter 'device=GPU' |
@@ -134,7 +122,6 @@ $exportParams = @{
 }
 Get-FoundryLocalModel | Export-Csv @exportParams
 Write-Host ('Models exported to: {0}' -f $exportPath)
-
 #endregion
 
 Write-Host "`n=== Demo Complete ===" -ForegroundColor Green

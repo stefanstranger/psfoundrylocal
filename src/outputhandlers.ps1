@@ -512,24 +512,18 @@ function Convert-FoundryLocalCacheListOutput {
             continue
         }
 
-        # Detect header line - sets inDataSection for subsequent lines
-        if ($trimmedLine -match '^\s*Alias\s+Model\s*ID') {
+        # Skip header line
+        if ($trimmedLine -match '^\s*Alias\s+Model ID' -or $trimmedLine -match 'Models cached') {
             $inDataSection = $true
-            continue
-        }
-
-        # Skip intro text
-        if ($trimmedLine -match 'Models cached') {
             continue
         }
 
         # Parse cache entries - handles both emoji and non-emoji formats
         # Format: "💾 alias    model-id" or just "alias    model-id"
         # The emoji may appear garbled due to encoding
-        # Model IDs typically contain version suffix like :1, :2, etc.
-        if ($inDataSection -and $trimmedLine -notmatch 'Cache directory') {
-            # Match lines that have model-like patterns (containing version numbers like :1 or :2)
-            if ($trimmedLine -match '(?<alias>[\w\.-]+)\s+(?<modelid>[\w\.-]+:\d+)') {
+        if ($inDataSection) {
+            # Try to match with any leading character(s) before the alias
+            if ($trimmedLine -match '^[^\w]*(?<alias>[\w\.-]+)\s+(?<modelid>[\w\.-]+.*)$' -and $trimmedLine -notmatch 'Cache directory') {
                 [PSCustomObject]@{
                     PSTypeName = 'psfoundrylocal.CachedModel'
                     Alias      = $Matches['alias'].Trim()

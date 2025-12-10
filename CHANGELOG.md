@@ -29,10 +29,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Pester tests for output handlers and basic integration scenarios.
 - Sample script `samples/demo.ps1` demonstrating common workflows.
 
+### Added
+- `Start-FoundryLocalChatSession` helper for launching interactive `foundry model run` chat sessions from PowerShell without parsing output.
+
 ### Changed
 - Enabled `SupportsShouldProcess` on all state-changing cmdlets (`Save-`, `Start-`, `Stop-`, `Restart-`, `Set-`, `Remove-`) and verified `-WhatIf`/`-Confirm` behavior.
 - Updated `samples/demo.ps1` to follow PowerShell best practices (splatting, format operator, `[CmdletBinding()]`, explicit parameter names).
 - Revised README to document features, usage examples, and `-WhatIf`/`-Confirm` support.
+
+- Removed the experimental `Invoke-FoundryLocalRun` Crescendo cmdlet in favor of the interactive `Start-FoundryLocalChatSession` function to better align with multi-turn chat behavior.
 
 ### Fixed
 - `Get-FoundryLocalCache` output handler to correctly parse the current `foundry cache list` table format (including wrapped lines and emoji/garbled characters), returning `psfoundrylocal.CachedModel` objects with `Alias` and `ModelId`.

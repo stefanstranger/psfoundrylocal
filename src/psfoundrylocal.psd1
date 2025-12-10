@@ -18,7 +18,7 @@ ModuleVersion = '0.0.1'
 # CompatiblePSEditions = @()
 
 # ID used to uniquely identify this module
-GUID = '5bc28fbc-5986-4524-b30e-993b4e586835'
+GUID = '95ea0308-0161-4506-a31b-599f6adde5af'
 
 # Author of this module
 Author = 'stefstr'
@@ -57,7 +57,7 @@ PowerShellVersion = '5.1.0'
 # RequiredAssemblies = @()
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
-# ScriptsToProcess = @()
+ScriptsToProcess = @('psfoundrylocal.chat.ps1')
 
 # Type files (.ps1xml) to be loaded when importing this module
 # TypesToProcess = @()
@@ -75,7 +75,8 @@ FunctionsToExport = 'Get-FoundryLocalModel', 'Get-FoundryLocalModelInfo',
                'Get-FoundryLocalServiceModel', 'Start-FoundryLocalService', 
                'Stop-FoundryLocalService', 'Restart-FoundryLocalService', 
                'Get-FoundryLocalCache', 'Get-FoundryLocalCacheLocation', 
-               'Set-FoundryLocalCacheLocation', 'Remove-FoundryLocalCachedModel'
+               'Set-FoundryLocalCacheLocation', 'Remove-FoundryLocalCachedModel', 
+               'Start-FoundryLocalChatSession'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -131,7 +132,7 @@ PrivateData = @{
     CrescendoVersion = '1.0.0'
 
     # CrescendoGenerated
-    CrescendoGenerated = '12/10/2025 13:57:18'
+    CrescendoGenerated = '12/10/2025 14:17:26'
 
 } # End of PrivateData hashtable
 

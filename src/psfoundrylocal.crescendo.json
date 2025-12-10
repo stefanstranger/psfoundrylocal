@@ -1,0 +1,607 @@
+{
+  "$schema": "https://aka.ms/PowerShell/Crescendo/Schemas/2022-06",
+  "Commands": [
+    {
+      "Verb": "Get",
+      "Noun": "FoundryLocalModel",
+      "OriginalName": "foundry",
+      "OriginalCommandElements": [
+        "model",
+        "list"
+      ],
+      "Description": "Lists all available models for Foundry Local. Returns model information including alias, device type, task, file size, license, and model ID.",
+      "Usage": {
+        "Synopsis": "Get a list of available Foundry Local models."
+      },
+      "Examples": [
+        {
+          "Command": "Get-FoundryLocalModel",
+          "Description": "Lists all available models.",
+          "OriginalCommand": "foundry model list"
+        },
+        {
+          "Command": "Get-FoundryLocalModel -Filter 'device=GPU'",
+          "Description": "Lists models filtered by GPU device.",
+          "OriginalCommand": "foundry model list --filter device=GPU"
+        },
+        {
+          "Command": "Get-FoundryLocalModel -Filter 'task=chat-completion'",
+          "Description": "Lists models filtered by chat-completion task.",
+          "OriginalCommand": "foundry model list --filter task=chat-completion"
+        }
+      ],
+      "Parameters": [
+        {
+          "Name": "Filter",
+          "OriginalName": "--filter",
+          "ParameterType": "string",
+          "Description": "Filter models by a specific criteria. Format: key=value. Supported keys: device (CPU, GPU, NPU), task (chat-completion, text-generation), alias, provider. Prefix value with ! for negation. Use * suffix for wildcard matching on alias.",
+          "Mandatory": false
+        }
+      ],
+      "OutputHandlers": [
+        {
+          "ParameterSetName": "Default",
+          "HandlerType": "Function",
+          "Handler": "Convert-FoundryLocalModelListOutput"
+        }
+      ]
+    },
+    {
+      "Verb": "Get",
+      "Noun": "FoundryLocalModelInfo",
+      "OriginalName": "foundry",
+      "OriginalCommandElements": [
+        "model",
+        "info"
+      ],
+      "Description": "Displays detailed information about a specific Foundry Local model.",
+      "Usage": {
+        "Synopsis": "Get detailed information about a specific Foundry Local model."
+      },
+      "Examples": [
+        {
+          "Command": "Get-FoundryLocalModelInfo -Model 'phi-4-mini'",
+          "Description": "Gets detailed information about the phi-4-mini model.",
+          "OriginalCommand": "foundry model info phi-4-mini"
+        },
+        {
+          "Command": "Get-FoundryLocalModelInfo -Model 'phi-4-mini' -Device GPU",
+          "Description": "Gets information about the phi-4-mini model for GPU device.",
+          "OriginalCommand": "foundry model info phi-4-mini --device GPU"
+        }
+      ],
+      "Parameters": [
+        {
+          "Name": "Model",
+          "OriginalName": "",
+          "OriginalPosition": 0,
+          "ParameterType": "string",
+          "Description": "Name or alias of the model to get information about.",
+          "Mandatory": true
+        },
+        {
+          "Name": "Device",
+          "OriginalName": "--device",
+          "ParameterType": "string",
+          "AdditionalParameterAttributes": [
+            "[ValidateSet('Auto', 'CPU', 'GPU', 'NPU')]"
+          ],
+          "Description": "Select a model that is valid for the specified device. Valid values: Auto, CPU, GPU, NPU.",
+          "Mandatory": false,
+          "DefaultValue": "Auto"
+        },
+        {
+          "Name": "License",
+          "OriginalName": "--license",
+          "ParameterType": "switch",
+          "Description": "View full terms of model license.",
+          "Mandatory": false
+        }
+      ],
+      "OutputHandlers": [
+        {
+          "ParameterSetName": "Default",
+          "HandlerType": "Function",
+          "Handler": "Convert-FoundryLocalModelInfoOutput"
+        }
+      ]
+    },
+    {
+      "Verb": "Save",
+      "Noun": "FoundryLocalModel",
+      "OriginalName": "foundry",
+      "OriginalCommandElements": [
+        "model",
+        "download"
+      ],
+      "Description": "Downloads a model to the local cache without running it.",
+      "Usage": {
+        "Synopsis": "Download a Foundry Local model to the local cache."
+      },
+      "Examples": [
+        {
+          "Command": "Save-FoundryLocalModel -Model 'phi-4-mini'",
+          "Description": "Downloads the phi-4-mini model to the local cache.",
+          "OriginalCommand": "foundry model download phi-4-mini"
+        },
+        {
+          "Command": "Save-FoundryLocalModel -Model 'phi-4-mini' -Device GPU -Force",
+          "Description": "Downloads the phi-4-mini GPU model, even if it already exists in cache.",
+          "OriginalCommand": "foundry model download phi-4-mini --device GPU --force"
+        }
+      ],
+      "Parameters": [
+        {
+          "Name": "Model",
+          "OriginalName": "",
+          "OriginalPosition": 0,
+          "ParameterType": "string",
+          "Description": "Name or alias of the model to download.",
+          "Mandatory": true
+        },
+        {
+          "Name": "Device",
+          "OriginalName": "--device",
+          "ParameterType": "string",
+          "AdditionalParameterAttributes": [
+            "[ValidateSet('Auto', 'CPU', 'GPU', 'NPU')]"
+          ],
+          "Description": "Select a model that is valid for the specified device. Valid values: Auto, CPU, GPU, NPU.",
+          "Mandatory": false,
+          "DefaultValue": "Auto"
+        },
+        {
+          "Name": "Force",
+          "OriginalName": "--force",
+          "ParameterType": "switch",
+          "Description": "Force download of model even if it already exists in the local cache.",
+          "Mandatory": false
+        },
+        {
+          "Name": "Token",
+          "OriginalName": "--token",
+          "ParameterType": "string",
+          "Description": "Access token for authentication.",
+          "Mandatory": false
+        }
+      ],
+      "OutputHandlers": [
+        {
+          "ParameterSetName": "Default",
+          "HandlerType": "Function",
+          "Handler": "Convert-FoundryLocalDownloadOutput"
+        }
+      ]
+    },
+    {
+      "Verb": "Start",
+      "Noun": "FoundryLocalModel",
+      "OriginalName": "foundry",
+      "OriginalCommandElements": [
+        "model",
+        "load"
+      ],
+      "Description": "Loads a model into the Foundry Local service.",
+      "Usage": {
+        "Synopsis": "Load a model into the Foundry Local service."
+      },
+      "Examples": [
+        {
+          "Command": "Start-FoundryLocalModel -Model 'phi-4-mini'",
+          "Description": "Loads the phi-4-mini model into the service.",
+          "OriginalCommand": "foundry model load phi-4-mini"
+        },
+        {
+          "Command": "Start-FoundryLocalModel -Model 'phi-4-mini' -Device GPU -TimeToLive 1200",
+          "Description": "Loads the phi-4-mini GPU model with a 20-minute TTL.",
+          "OriginalCommand": "foundry model load phi-4-mini --device GPU --ttl 1200"
+        }
+      ],
+      "Parameters": [
+        {
+          "Name": "Model",
+          "OriginalName": "",
+          "OriginalPosition": 0,
+          "ParameterType": "string",
+          "Description": "Name or alias of the model to load.",
+          "Mandatory": true
+        },
+        {
+          "Name": "Device",
+          "OriginalName": "--device",
+          "ParameterType": "string",
+          "AdditionalParameterAttributes": [
+            "[ValidateSet('Auto', 'CPU', 'GPU', 'NPU')]"
+          ],
+          "Description": "Select a model that is valid for the specified device. Valid values: Auto, CPU, GPU, NPU.",
+          "Mandatory": false,
+          "DefaultValue": "Auto"
+        },
+        {
+          "Name": "TimeToLive",
+          "OriginalName": "--ttl",
+          "ParameterType": "int",
+          "Description": "Time To Live in seconds. Default is 600 seconds (10 minutes).",
+          "Mandatory": false,
+          "DefaultValue": "600"
+        }
+      ],
+      "OutputHandlers": [
+        {
+          "ParameterSetName": "Default",
+          "HandlerType": "Function",
+          "Handler": "Convert-FoundryLocalLoadOutput"
+        }
+      ]
+    },
+    {
+      "Verb": "Stop",
+      "Noun": "FoundryLocalModel",
+      "OriginalName": "foundry",
+      "OriginalCommandElements": [
+        "model",
+        "unload"
+      ],
+      "Description": "Unloads a model from the Foundry Local service.",
+      "Usage": {
+        "Synopsis": "Unload a model from the Foundry Local service."
+      },
+      "Examples": [
+        {
+          "Command": "Stop-FoundryLocalModel -Model 'phi-4-mini'",
+          "Description": "Unloads the phi-4-mini model from the service.",
+          "OriginalCommand": "foundry model unload phi-4-mini"
+        },
+        {
+          "Command": "Stop-FoundryLocalModel -Model 'phi-4-mini' -All",
+          "Description": "Unloads all models matching the phi-4-mini alias.",
+          "OriginalCommand": "foundry model unload phi-4-mini --all"
+        }
+      ],
+      "Parameters": [
+        {
+          "Name": "Model",
+          "OriginalName": "",
+          "OriginalPosition": 0,
+          "ParameterType": "string",
+          "Description": "Name or alias of the model to unload.",
+          "Mandatory": true
+        },
+        {
+          "Name": "Device",
+          "OriginalName": "--device",
+          "ParameterType": "string",
+          "AdditionalParameterAttributes": [
+            "[ValidateSet('Auto', 'CPU', 'GPU', 'NPU')]"
+          ],
+          "Description": "Select a model that is valid for the specified device. Valid values: Auto, CPU, GPU, NPU.",
+          "Mandatory": false,
+          "DefaultValue": "Auto"
+        },
+        {
+          "Name": "All",
+          "OriginalName": "--all",
+          "ParameterType": "switch",
+          "Description": "Unload all models matching the specified alias instead of just the best match.",
+          "Mandatory": false
+        },
+        {
+          "Name": "Force",
+          "OriginalName": "--force",
+          "ParameterType": "switch",
+          "Description": "Force the unloading.",
+          "Mandatory": false
+        }
+      ],
+      "OutputHandlers": [
+        {
+          "ParameterSetName": "Default",
+          "HandlerType": "Function",
+          "Handler": "Convert-FoundryLocalUnloadOutput"
+        }
+      ]
+    },
+    {
+      "Verb": "Get",
+      "Noun": "FoundryLocalService",
+      "OriginalName": "foundry",
+      "OriginalCommandElements": [
+        "service",
+        "status"
+      ],
+      "Description": "Gets the current status of the Foundry Local service.",
+      "Usage": {
+        "Synopsis": "Get the status of the Foundry Local service."
+      },
+      "Examples": [
+        {
+          "Command": "Get-FoundryLocalService",
+          "Description": "Gets the current status of the Foundry Local service.",
+          "OriginalCommand": "foundry service status"
+        }
+      ],
+      "Parameters": [],
+      "OutputHandlers": [
+        {
+          "ParameterSetName": "Default",
+          "HandlerType": "Function",
+          "Handler": "Convert-FoundryLocalServiceStatusOutput"
+        }
+      ]
+    },
+    {
+      "Verb": "Get",
+      "Noun": "FoundryLocalServiceModel",
+      "OriginalName": "foundry",
+      "OriginalCommandElements": [
+        "service",
+        "ps"
+      ],
+      "Description": "Lists all models currently loaded in the Foundry Local service.",
+      "Usage": {
+        "Synopsis": "Get the list of models loaded in the Foundry Local service."
+      },
+      "Examples": [
+        {
+          "Command": "Get-FoundryLocalServiceModel",
+          "Description": "Lists all models currently loaded in the service.",
+          "OriginalCommand": "foundry service ps"
+        }
+      ],
+      "Parameters": [],
+      "OutputHandlers": [
+        {
+          "ParameterSetName": "Default",
+          "HandlerType": "Function",
+          "Handler": "Convert-FoundryLocalServicePsOutput"
+        }
+      ]
+    },
+    {
+      "Verb": "Start",
+      "Noun": "FoundryLocalService",
+      "OriginalName": "foundry",
+      "OriginalCommandElements": [
+        "service",
+        "start"
+      ],
+      "Description": "Starts the Foundry Local service.",
+      "Usage": {
+        "Synopsis": "Start the Foundry Local service."
+      },
+      "Examples": [
+        {
+          "Command": "Start-FoundryLocalService",
+          "Description": "Starts the Foundry Local service.",
+          "OriginalCommand": "foundry service start"
+        }
+      ],
+      "Parameters": [],
+      "OutputHandlers": [
+        {
+          "ParameterSetName": "Default",
+          "HandlerType": "Function",
+          "Handler": "Convert-FoundryLocalServiceStartOutput"
+        }
+      ]
+    },
+    {
+      "Verb": "Stop",
+      "Noun": "FoundryLocalService",
+      "OriginalName": "foundry",
+      "OriginalCommandElements": [
+        "service",
+        "stop"
+      ],
+      "Description": "Stops the Foundry Local service.",
+      "Usage": {
+        "Synopsis": "Stop the Foundry Local service."
+      },
+      "Examples": [
+        {
+          "Command": "Stop-FoundryLocalService",
+          "Description": "Stops the Foundry Local service.",
+          "OriginalCommand": "foundry service stop"
+        }
+      ],
+      "Parameters": [],
+      "OutputHandlers": [
+        {
+          "ParameterSetName": "Default",
+          "HandlerType": "Function",
+          "Handler": "Convert-FoundryLocalServiceStopOutput"
+        }
+      ]
+    },
+    {
+      "Verb": "Restart",
+      "Noun": "FoundryLocalService",
+      "OriginalName": "foundry",
+      "OriginalCommandElements": [
+        "service",
+        "restart"
+      ],
+      "Description": "Restarts the Foundry Local service.",
+      "Usage": {
+        "Synopsis": "Restart the Foundry Local service."
+      },
+      "Examples": [
+        {
+          "Command": "Restart-FoundryLocalService",
+          "Description": "Restarts the Foundry Local service.",
+          "OriginalCommand": "foundry service restart"
+        }
+      ],
+      "Parameters": [],
+      "OutputHandlers": [
+        {
+          "ParameterSetName": "Default",
+          "HandlerType": "Function",
+          "Handler": "Convert-FoundryLocalServiceRestartOutput"
+        }
+      ]
+    },
+    {
+      "Verb": "Get",
+      "Noun": "FoundryLocalCache",
+      "OriginalName": "foundry",
+      "OriginalCommandElements": [
+        "cache",
+        "list"
+      ],
+      "Description": "Lists all models stored in the local cache.",
+      "Usage": {
+        "Synopsis": "Get the list of cached Foundry Local models."
+      },
+      "Examples": [
+        {
+          "Command": "Get-FoundryLocalCache",
+          "Description": "Lists all models in the local cache.",
+          "OriginalCommand": "foundry cache list"
+        }
+      ],
+      "Parameters": [],
+      "OutputHandlers": [
+        {
+          "ParameterSetName": "Default",
+          "HandlerType": "Function",
+          "Handler": "Convert-FoundryLocalCacheListOutput"
+        }
+      ]
+    },
+    {
+      "Verb": "Get",
+      "Noun": "FoundryLocalCacheLocation",
+      "OriginalName": "foundry",
+      "OriginalCommandElements": [
+        "cache",
+        "location"
+      ],
+      "Description": "Gets the current cache directory path for Foundry Local models.",
+      "Usage": {
+        "Synopsis": "Get the Foundry Local cache directory location."
+      },
+      "Examples": [
+        {
+          "Command": "Get-FoundryLocalCacheLocation",
+          "Description": "Gets the current cache directory path.",
+          "OriginalCommand": "foundry cache location"
+        }
+      ],
+      "Parameters": [],
+      "OutputHandlers": [
+        {
+          "ParameterSetName": "Default",
+          "HandlerType": "Function",
+          "Handler": "Convert-FoundryLocalCacheLocationOutput"
+        }
+      ]
+    },
+    {
+      "Verb": "Set",
+      "Noun": "FoundryLocalCacheLocation",
+      "OriginalName": "foundry",
+      "OriginalCommandElements": [
+        "cache",
+        "cd"
+      ],
+      "Description": "Changes the cache directory path for Foundry Local models.",
+      "Usage": {
+        "Synopsis": "Set the Foundry Local cache directory location."
+      },
+      "Examples": [
+        {
+          "Command": "Set-FoundryLocalCacheLocation -Path 'D:\\FoundryCache'",
+          "Description": "Changes the cache directory to D:\\FoundryCache.",
+          "OriginalCommand": "foundry cache cd D:\\FoundryCache"
+        }
+      ],
+      "Parameters": [
+        {
+          "Name": "Path",
+          "OriginalName": "",
+          "OriginalPosition": 0,
+          "ParameterType": "string",
+          "Description": "The new model cache directory path.",
+          "Mandatory": true
+        }
+      ],
+      "OutputHandlers": [
+        {
+          "ParameterSetName": "Default",
+          "HandlerType": "Function",
+          "Handler": "Convert-FoundryLocalCacheCdOutput"
+        }
+      ]
+    },
+    {
+      "Verb": "Remove",
+      "Noun": "FoundryLocalCachedModel",
+      "OriginalName": "foundry",
+      "OriginalCommandElements": [
+        "cache",
+        "remove"
+      ],
+      "Description": "Removes a model from the local cache.",
+      "Usage": {
+        "Synopsis": "Remove a cached Foundry Local model."
+      },
+      "Examples": [
+        {
+          "Command": "Remove-FoundryLocalCachedModel -Model 'phi-4-mini'",
+          "Description": "Removes the phi-4-mini model from the cache.",
+          "OriginalCommand": "foundry cache remove phi-4-mini"
+        },
+        {
+          "Command": "Remove-FoundryLocalCachedModel -Model '*' -Confirm:$false",
+          "Description": "Removes all cached models without confirmation.",
+          "OriginalCommand": "foundry cache remove * --yes"
+        }
+      ],
+      "SupportsShouldProcess": true,
+      "Parameters": [
+        {
+          "Name": "Model",
+          "OriginalName": "",
+          "OriginalPosition": 0,
+          "ParameterType": "string",
+          "Description": "Model ID or alias to delete. Use '*' to delete all cached models.",
+          "Mandatory": true
+        },
+        {
+          "Name": "Device",
+          "OriginalName": "--device",
+          "ParameterType": "string",
+          "AdditionalParameterAttributes": [
+            "[ValidateSet('Auto', 'CPU', 'GPU', 'NPU')]"
+          ],
+          "Description": "Select a model that is valid for the specified device. Valid values: Auto, CPU, GPU, NPU.",
+          "Mandatory": false,
+          "DefaultValue": "Auto"
+        },
+        {
+          "Name": "All",
+          "OriginalName": "--all",
+          "ParameterType": "switch",
+          "Description": "Remove all models matching the specified alias instead of just the best match.",
+          "Mandatory": false
+        },
+        {
+          "Name": "Yes",
+          "OriginalName": "--yes",
+          "ParameterType": "switch",
+          "Description": "Remove the model from cache without confirmation prompt.",
+          "Mandatory": false
+        }
+      ],
+      "OutputHandlers": [
+        {
+          "ParameterSetName": "Default",
+          "HandlerType": "Function",
+          "Handler": "Convert-FoundryLocalCacheRemoveOutput"
+        }
+      ]
+    }
+  ]
+}

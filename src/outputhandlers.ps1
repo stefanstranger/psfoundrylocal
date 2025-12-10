@@ -503,6 +503,7 @@ function Convert-FoundryLocalCacheListOutput {
     $lines = if ($Output -is [array]) { $Output } else { $Output -split "`n" }
 
     $inDataSection = $false
+    $currentRow = $null
 
     foreach ($line in $lines) {
         $trimmedLine = $line.Trim()
@@ -512,24 +513,54 @@ function Convert-FoundryLocalCacheListOutput {
             continue
         }
 
-        # Skip header line
-        if ($trimmedLine -match '^\s*Alias\s+Model ID' -or $trimmedLine -match 'Models cached') {
-            $inDataSection = $true
+        # Skip informational line
+        if ($trimmedLine -match 'Models cached') {
             continue
         }
 
-        # Parse cache entries - handles both emoji and non-emoji formats
-        # Format: "💾 alias    model-id" or just "alias    model-id"
-        # The emoji may appear garbled due to encoding
-        if ($inDataSection) {
-            # Try to match with any leading character(s) before the alias
-            if ($trimmedLine -match '^[^\w]*(?<alias>[\w\.-]+)\s+(?<modelid>[\w\.-]+.*)$' -and $trimmedLine -notmatch 'Cache directory') {
-                [PSCustomObject]@{
-                    PSTypeName = 'psfoundrylocal.CachedModel'
-                    Alias      = $Matches['alias'].Trim()
-                    ModelId    = $Matches['modelid'].Trim()
+        # Detect header line (Alias / Model ID on one line)
+        if ($trimmedLine -match '^\s*Alias\s+Model ID\s*$') {
+            $inDataSection = $true
+            $currentRow = $null
+            continue
+        }
+
+        if (-not $inDataSection) {
+            continue
+        }
+
+        # Once in data section, assemble logical rows to undo console wrapping.
+        # A new row starts when we see an alias (optionally prefixed with an icon).
+        # Use an explicit ASCII character class so that garbled emoji bytes are not
+        # treated as part of the alias.
+        if ($trimmedLine -match '^[^A-Za-z0-9_.-]*(?<alias>[A-Za-z0-9_.-]+)\b' -and $trimmedLine -notmatch 'Alias|Model ID') {
+            # Flush previous row if present
+            if ($currentRow) {
+                if ($currentRow -match '^[^A-Za-z0-9_.-]*(?<ra>[A-Za-z0-9_.-]+)\s+(?<rm>.+)$' -and $currentRow -notmatch 'Cache directory') {
+                    [PSCustomObject]@{
+                        PSTypeName = 'psfoundrylocal.CachedModel'
+                        Alias      = $Matches['ra'].Trim()
+                        ModelId    = $Matches['rm'].Trim()
+                    }
                 }
             }
+
+            $currentRow = $trimmedLine
+            continue
+        }
+
+        # Continuation of the current row (wrapped model id line)
+        if ($currentRow) {
+            $currentRow = "$currentRow $trimmedLine"
+        }
+    }
+
+    # Flush the final row
+    if ($currentRow -and $currentRow -match '^[^A-Za-z0-9_.-]*(?<fa>[A-Za-z0-9_.-]+)\s+(?<fm>.+)$' -and $currentRow -notmatch 'Cache directory') {
+        [PSCustomObject]@{
+            PSTypeName = 'psfoundrylocal.CachedModel'
+            Alias      = $Matches['fa'].Trim()
+            ModelId    = $Matches['fm'].Trim()
         }
     }
 }

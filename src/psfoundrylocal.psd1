@@ -18,7 +18,7 @@ ModuleVersion = '0.0.1'
 # CompatiblePSEditions = @()
 
 # ID used to uniquely identify this module
-GUID = 'a464c482-f170-4889-b411-8cf36b3aabb6'
+GUID = '5bc28fbc-5986-4524-b30e-993b4e586835'
 
 # Author of this module
 Author = 'stefstr'
@@ -69,12 +69,12 @@ PowerShellVersion = '5.1.0'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Get-FoundryLocalModel', 'Get-FoundryLocalModelInfo',
-               'Save-FoundryLocalModel', 'Start-FoundryLocalModel',
-               'Stop-FoundryLocalModel', 'Get-FoundryLocalService',
-               'Get-FoundryLocalServiceModel', 'Start-FoundryLocalService',
-               'Stop-FoundryLocalService', 'Restart-FoundryLocalService',
-               'Get-FoundryLocalCache', 'Get-FoundryLocalCacheLocation',
+FunctionsToExport = 'Get-FoundryLocalModel', 'Get-FoundryLocalModelInfo', 
+               'Save-FoundryLocalModel', 'Start-FoundryLocalModel', 
+               'Stop-FoundryLocalModel', 'Get-FoundryLocalService', 
+               'Get-FoundryLocalServiceModel', 'Start-FoundryLocalService', 
+               'Stop-FoundryLocalService', 'Restart-FoundryLocalService', 
+               'Get-FoundryLocalCache', 'Get-FoundryLocalCacheLocation', 
                'Set-FoundryLocalCacheLocation', 'Remove-FoundryLocalCachedModel'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -131,7 +131,7 @@ PrivateData = @{
     CrescendoVersion = '1.0.0'
 
     # CrescendoGenerated
-    CrescendoGenerated = '12/10/2025 10:00:14'
+    CrescendoGenerated = '12/10/2025 13:57:18'
 
 } # End of PrivateData hashtable
 

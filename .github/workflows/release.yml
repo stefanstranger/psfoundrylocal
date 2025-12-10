@@ -90,10 +90,14 @@ jobs:
           # Ensure TLS 1.2 (required by PowerShell Gallery)
           [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 
+          # Publish-Module requires the folder name to match the module name
+          # Copy src to psfoundrylocal folder
+          Copy-Item -Path ./src -Destination ./psfoundrylocal -Recurse
+
           # Preview the publish operation
           Write-Host '::group::Publish-Module -WhatIf'
-          Publish-Module -Path ./src -NuGetApiKey $env:NUGET_API_KEY -WhatIf -Verbose
+          Publish-Module -Path ./psfoundrylocal -NuGetApiKey $env:NUGET_API_KEY -WhatIf -Verbose
           Write-Host '::endgroup::'
 
           # Perform actual publish
-          Publish-Module -Path ./src -NuGetApiKey $env:NUGET_API_KEY -Verbose
+          Publish-Module -Path ./psfoundrylocal -NuGetApiKey $env:NUGET_API_KEY -Verbose

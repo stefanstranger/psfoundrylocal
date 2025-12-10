@@ -30,7 +30,7 @@ CompanyName = 'Unknown'
 Copyright = '(c) stefstr. All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = ''
+Description = 'PowerShell module for managing Foundry Local - an on-device AI inference solution. Provides cmdlets for model management, service control, and cache operations.'
 
 # Minimum version of the PowerShell engine required by this module
 PowerShellVersion = '5.1.0'

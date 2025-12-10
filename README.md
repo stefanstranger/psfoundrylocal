@@ -173,6 +173,12 @@ Save-FoundryLocalModel -Model 'phi-4-mini' -Device GPU
 Remove-FoundryLocalCachedModel -Model 'phi-4-mini' -Confirm:$false
 ```
 
+To inspect the cache as objects, use:
+
+```powershell
+Get-FoundryLocalCache | Format-Table Alias, ModelId -AutoSize
+```
+
 ### Using WhatIf and Confirm
 
 State-changing cmdlets support `-WhatIf` to preview actions without executing them:

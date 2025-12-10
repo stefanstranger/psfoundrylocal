@@ -1,5 +1,5 @@
-# Module created by Microsoft.PowerShell.Crescendo
-class PowerShellCustomFunctionAttribute : System.Attribute { 
+﻿# Module created by Microsoft.PowerShell.Crescendo
+class PowerShellCustomFunctionAttribute : System.Attribute {
     [bool]$RequiresElevation
     [string]$Source
     PowerShellCustomFunctionAttribute() { $this.RequiresElevation = $false; $this.Source = "Microsoft.PowerShell.Crescendo" }
@@ -442,7 +442,7 @@ function Convert-FoundryLocalDownloadOutput {
 function Save-FoundryLocalModel
 {
 [PowerShellCustomFunctionAttribute(RequiresElevation=$False)]
-[CmdletBinding()]
+[CmdletBinding(SupportsShouldProcess=$true)]
 
 param(
 [Parameter(Mandatory=$true)]
@@ -625,7 +625,7 @@ function Convert-FoundryLocalLoadOutput {
 function Start-FoundryLocalModel
 {
 [PowerShellCustomFunctionAttribute(RequiresElevation=$False)]
-[CmdletBinding()]
+[CmdletBinding(SupportsShouldProcess=$true)]
 
 param(
 [Parameter(Mandatory=$true)]
@@ -795,7 +795,7 @@ function Convert-FoundryLocalUnloadOutput {
 function Stop-FoundryLocalModel
 {
 [PowerShellCustomFunctionAttribute(RequiresElevation=$False)]
-[CmdletBinding()]
+[CmdletBinding(SupportsShouldProcess=$true)]
 
 param(
 [Parameter(Mandatory=$true)]
@@ -1263,7 +1263,7 @@ function Convert-FoundryLocalServiceStartOutput {
 function Start-FoundryLocalService
 {
 [PowerShellCustomFunctionAttribute(RequiresElevation=$False)]
-[CmdletBinding()]
+[CmdletBinding(SupportsShouldProcess=$true)]
 
 param(    )
 
@@ -1376,7 +1376,7 @@ function Convert-FoundryLocalServiceStopOutput {
 function Stop-FoundryLocalService
 {
 [PowerShellCustomFunctionAttribute(RequiresElevation=$False)]
-[CmdletBinding()]
+[CmdletBinding(SupportsShouldProcess=$true)]
 
 param(    )
 
@@ -1504,7 +1504,7 @@ function Convert-FoundryLocalServiceRestartOutput {
 function Restart-FoundryLocalService
 {
 [PowerShellCustomFunctionAttribute(RequiresElevation=$False)]
-[CmdletBinding()]
+[CmdletBinding(SupportsShouldProcess=$true)]
 
 param(    )
 
@@ -1615,24 +1615,18 @@ function Convert-FoundryLocalCacheListOutput {
             continue
         }
 
-        # Detect header line - sets inDataSection for subsequent lines
-        if ($trimmedLine -match '^\s*Alias\s+Model\s*ID') {
+        # Skip header line
+        if ($trimmedLine -match '^\s*Alias\s+Model ID' -or $trimmedLine -match 'Models cached') {
             $inDataSection = $true
-            continue
-        }
-
-        # Skip intro text
-        if ($trimmedLine -match 'Models cached') {
             continue
         }
 
         # Parse cache entries - handles both emoji and non-emoji formats
         # Format: "💾 alias    model-id" or just "alias    model-id"
         # The emoji may appear garbled due to encoding
-        # Model IDs typically contain version suffix like :1, :2, etc.
-        if ($inDataSection -and $trimmedLine -notmatch 'Cache directory') {
-            # Match lines that have model-like patterns (containing version numbers like :1 or :2)
-            if ($trimmedLine -match '(?<alias>[\w\.-]+)\s+(?<modelid>[\w\.-]+:\d+)') {
+        if ($inDataSection) {
+            # Try to match with any leading character(s) before the alias
+            if ($trimmedLine -match '^[^\w]*(?<alias>[\w\.-]+)\s+(?<modelid>[\w\.-]+.*)$' -and $trimmedLine -notmatch 'Cache directory') {
                 [PSCustomObject]@{
                     PSTypeName = 'psfoundrylocal.CachedModel'
                     Alias      = $Matches['alias'].Trim()
@@ -1882,7 +1876,7 @@ function Convert-FoundryLocalCacheCdOutput {
 function Set-FoundryLocalCacheLocation
 {
 [PowerShellCustomFunctionAttribute(RequiresElevation=$False)]
-[CmdletBinding()]
+[CmdletBinding(SupportsShouldProcess=$true)]
 
 param(
 [Parameter(Mandatory=$true)]

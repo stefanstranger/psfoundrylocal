@@ -18,16 +18,16 @@ ModuleVersion = '0.0.1'
 # CompatiblePSEditions = @()
 
 # ID used to uniquely identify this module
-GUID = '444c773f-b6c4-430a-a110-546554ce1e9e'
+GUID = 'a464c482-f170-4889-b411-8cf36b3aabb6'
 
 # Author of this module
-Author = 'Stefan Stranger'
+Author = 'stefstr'
 
 # Company or vendor of this module
 CompanyName = 'Unknown'
 
 # Copyright statement for this module
-Copyright = '(c) Stefan Stranger    . All rights reserved.'
+Copyright = '(c) stefstr. All rights reserved.'
 
 # Description of the functionality provided by this module
 # Description = ''
@@ -69,12 +69,12 @@ PowerShellVersion = '5.1.0'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Get-FoundryLocalModel', 'Get-FoundryLocalModelInfo', 
-               'Save-FoundryLocalModel', 'Start-FoundryLocalModel', 
-               'Stop-FoundryLocalModel', 'Get-FoundryLocalService', 
-               'Get-FoundryLocalServiceModel', 'Start-FoundryLocalService', 
-               'Stop-FoundryLocalService', 'Restart-FoundryLocalService', 
-               'Get-FoundryLocalCache', 'Get-FoundryLocalCacheLocation', 
+FunctionsToExport = 'Get-FoundryLocalModel', 'Get-FoundryLocalModelInfo',
+               'Save-FoundryLocalModel', 'Start-FoundryLocalModel',
+               'Stop-FoundryLocalModel', 'Get-FoundryLocalService',
+               'Get-FoundryLocalServiceModel', 'Start-FoundryLocalService',
+               'Stop-FoundryLocalService', 'Restart-FoundryLocalService',
+               'Get-FoundryLocalCache', 'Get-FoundryLocalCacheLocation',
                'Set-FoundryLocalCacheLocation', 'Remove-FoundryLocalCachedModel'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -127,11 +127,11 @@ PrivateData = @{
     } # End of PSData hashtable
 
 
-    # CrescendoGenerated
-    CrescendoGenerated = '12/10/2025 09:48:48'
-
     # CrescendoVersion
     CrescendoVersion = '1.0.0'
+
+    # CrescendoGenerated
+    CrescendoGenerated = '12/10/2025 10:00:14'
 
 } # End of PrivateData hashtable
 

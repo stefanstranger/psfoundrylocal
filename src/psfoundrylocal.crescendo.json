@@ -115,6 +115,7 @@
         "model",
         "download"
       ],
+      "SupportsShouldProcess": true,
       "Description": "Downloads a model to the local cache without running it.",
       "Usage": {
         "Synopsis": "Download a Foundry Local model to the local cache."
@@ -182,6 +183,7 @@
         "model",
         "load"
       ],
+      "SupportsShouldProcess": true,
       "Description": "Loads a model into the Foundry Local service.",
       "Usage": {
         "Synopsis": "Load a model into the Foundry Local service."
@@ -243,6 +245,7 @@
         "model",
         "unload"
       ],
+      "SupportsShouldProcess": true,
       "Description": "Unloads a model from the Foundry Local service.",
       "Usage": {
         "Synopsis": "Unload a model from the Foundry Local service."
@@ -366,6 +369,7 @@
         "service",
         "start"
       ],
+      "SupportsShouldProcess": true,
       "Description": "Starts the Foundry Local service.",
       "Usage": {
         "Synopsis": "Start the Foundry Local service."
@@ -394,6 +398,7 @@
         "service",
         "stop"
       ],
+      "SupportsShouldProcess": true,
       "Description": "Stops the Foundry Local service.",
       "Usage": {
         "Synopsis": "Stop the Foundry Local service."
@@ -422,6 +427,7 @@
         "service",
         "restart"
       ],
+      "SupportsShouldProcess": true,
       "Description": "Restarts the Foundry Local service.",
       "Usage": {
         "Synopsis": "Restart the Foundry Local service."
@@ -506,6 +512,7 @@
         "cache",
         "cd"
       ],
+      "SupportsShouldProcess": true,
       "Description": "Changes the cache directory path for Foundry Local models.",
       "Usage": {
         "Synopsis": "Set the Foundry Local cache directory location."

@@ -11,6 +11,8 @@ This module wraps the Foundry Local command-line interface using [Microsoft.Powe
 - **Pipeline support**: Chain commands together for powerful workflows
 - **Tab completion**: Parameter names and values support tab completion
 - **Consistent naming**: Follows PowerShell verb-noun conventions
+- **WhatIf/Confirm support**: State-changing cmdlets support `-WhatIf` and `-Confirm` parameters
+- **PSScriptAnalyzer compliant**: Follows PowerShell best practices
 
 ## Prerequisites
 
@@ -170,6 +172,32 @@ Save-FoundryLocalModel -Model 'phi-4-mini' -Device GPU
 # Remove a cached model
 Remove-FoundryLocalCachedModel -Model 'phi-4-mini' -Confirm:$false
 ```
+
+### Using WhatIf and Confirm
+
+State-changing cmdlets support `-WhatIf` to preview actions without executing them:
+
+```powershell
+# Preview what would happen without actually stopping the service
+Stop-FoundryLocalService -WhatIf
+# Output: What if: Performing the operation "Stop-FoundryLocalService" on target "foundry service stop".
+
+# Preview model removal
+Remove-FoundryLocalCachedModel -Model 'phi-4-mini' -WhatIf
+
+# Require confirmation before starting service
+Start-FoundryLocalService -Confirm
+```
+
+The following cmdlets support `-WhatIf` and `-Confirm`:
+- `Save-FoundryLocalModel`
+- `Start-FoundryLocalModel`
+- `Stop-FoundryLocalModel`
+- `Start-FoundryLocalService`
+- `Stop-FoundryLocalService`
+- `Restart-FoundryLocalService`
+- `Set-FoundryLocalCacheLocation`
+- `Remove-FoundryLocalCachedModel`
 
 ## Output Types
 

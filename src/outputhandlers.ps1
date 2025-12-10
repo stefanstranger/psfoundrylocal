@@ -1,4 +1,4 @@
-#region Output Handler Functions for psfoundrylocal Crescendo Module
+﻿#region Output Handler Functions for psfoundrylocal Crescendo Module
 # These functions parse the output from Foundry Local CLI commands
 # and convert them to PowerShell objects for pipeline use.
 

@@ -84,32 +84,32 @@ Get-FoundryLocalCacheLocation
 
 ### Model Management
 
-| Cmdlet | Description |
-|--------|-------------|
-| `Get-FoundryLocalModel` | Lists all available models |
-| `Get-FoundryLocalModelInfo` | Gets detailed information about a specific model |
-| `Save-FoundryLocalModel` | Downloads a model to local cache |
-| `Start-FoundryLocalModel` | Loads a model into the service |
-| `Stop-FoundryLocalModel` | Unloads a model from the service |
+| Cmdlet | Description | Foundry CLI |
+|--------|-------------|------------|
+| `Get-FoundryLocalModel` | Lists all available models | `foundry model list` |
+| `Get-FoundryLocalModelInfo` | Gets detailed information about a specific model | `foundry model info <model>` |
+| `Save-FoundryLocalModel` | Downloads a model to local cache | `foundry model download <model>` |
+| `Start-FoundryLocalModel` | Loads a model into the service | `foundry model load <model>` |
+| `Stop-FoundryLocalModel` | Unloads a model from the service | `foundry model unload <model>` |
 
 ### Service Management
 
-| Cmdlet | Description |
-|--------|-------------|
-| `Get-FoundryLocalService` | Gets the current service status |
-| `Get-FoundryLocalServiceModel` | Lists models loaded in the service |
-| `Start-FoundryLocalService` | Starts the Foundry Local service |
-| `Stop-FoundryLocalService` | Stops the Foundry Local service |
-| `Restart-FoundryLocalService` | Restarts the Foundry Local service |
+| Cmdlet | Description | Foundry CLI |
+|--------|-------------|------------|
+| `Get-FoundryLocalService` | Gets the current service status | `foundry service status` |
+| `Get-FoundryLocalServiceModel` | Lists models loaded in the service | `foundry service ps` |
+| `Start-FoundryLocalService` | Starts the Foundry Local service | `foundry service start` |
+| `Stop-FoundryLocalService` | Stops the Foundry Local service | `foundry service stop` |
+| `Restart-FoundryLocalService` | Restarts the Foundry Local service | `foundry service restart` |
 
 ### Cache Management
 
-| Cmdlet | Description |
-|--------|-------------|
-| `Get-FoundryLocalCache` | Lists all cached models |
-| `Get-FoundryLocalCacheLocation` | Gets the cache directory path |
-| `Set-FoundryLocalCacheLocation` | Changes the cache directory |
-| `Remove-FoundryLocalCachedModel` | Removes a model from the cache |
+| Cmdlet | Description | Foundry CLI |
+|--------|-------------|------------|
+| `Get-FoundryLocalCache` | Lists all cached models | `foundry cache list` |
+| `Get-FoundryLocalCacheLocation` | Gets the cache directory path | `foundry cache location` |
+| `Set-FoundryLocalCacheLocation` | Changes the cache directory | `foundry cache cd <path>` |
+| `Remove-FoundryLocalCachedModel` | Removes a model from the cache | `foundry cache remove <model>` |
 
 ## Examples
 

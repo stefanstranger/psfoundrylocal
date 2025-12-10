@@ -18,16 +18,16 @@ ModuleVersion = '0.0.1'
 # CompatiblePSEditions = @()
 
 # ID used to uniquely identify this module
-GUID = '447d1e55-075e-4610-b897-7214a34c4cc8'
+GUID = '444c773f-b6c4-430a-a110-546554ce1e9e'
 
 # Author of this module
-Author = 'stefstr'
+Author = 'Stefan Stranger'
 
 # Company or vendor of this module
 CompanyName = 'Unknown'
 
 # Copyright statement for this module
-Copyright = '(c) stefstr. All rights reserved.'
+Copyright = '(c) Stefan Stranger    . All rights reserved.'
 
 # Description of the functionality provided by this module
 # Description = ''
@@ -128,7 +128,7 @@ PrivateData = @{
 
 
     # CrescendoGenerated
-    CrescendoGenerated = '12/10/2025 09:45:33'
+    CrescendoGenerated = '12/10/2025 09:48:48'
 
     # CrescendoVersion
     CrescendoVersion = '1.0.0'

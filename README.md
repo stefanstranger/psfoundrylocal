@@ -256,6 +256,27 @@ Invoke-Pester -Path .\tests\OutputHandlers.Tests.ps1
 Invoke-Pester -Path .\tests\Integration.Tests.ps1
 ```
 
+## CI/CD
+
+This project uses GitHub Actions for continuous integration and deployment:
+
+- **Validation**: Runs PSScriptAnalyzer and Pester tests on every release
+- **Release**: Automatically creates a GitHub Release when a version tag is pushed
+- **Publish**: Publishes the module to the PowerShell Gallery
+
+### Creating a Release
+
+1. Update `ModuleVersion` in `src/psfoundrylocal.psd1`
+2. Update `CHANGELOG.md`
+3. Commit and push to `main`
+4. Tag and push:
+   ```bash
+   git tag v0.1.0
+   git push origin v0.1.0
+   ```
+
+The workflow will validate, create a GitHub Release, and publish to the PowerShell Gallery.
+
 ## Contributing
 
 Contributions are welcome! Please:

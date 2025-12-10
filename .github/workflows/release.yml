@@ -1,0 +1,99 @@
+name: Release & Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      prerelease:
+        description: 'Mark as pre-release'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  # ─────────────────────────────────────────────
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install PSScriptAnalyzer & Pester
+        shell: pwsh
+        run: |
+          Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+          Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force
+          Install-Module -Name Pester -MinimumVersion 5.0 -Scope CurrentUser -Force
+
+      - name: Run PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          $results = Invoke-ScriptAnalyzer -Path ./src -Recurse -Severity Error
+          if ($results) {
+            $results | Format-Table -AutoSize
+            throw 'PSScriptAnalyzer found errors'
+          }
+
+      - name: Run Pester Tests
+        shell: pwsh
+        run: |
+          $cfg = New-PesterConfiguration
+          $cfg.Run.Path = './tests'
+          $cfg.Run.Exit = $true
+          Invoke-Pester -Configuration $cfg
+
+  # ─────────────────────────────────────────────
+  release:
+    needs: validate
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Verify manifest version matches tag
+        shell: pwsh
+        run: |
+          $manifest = Import-PowerShellDataFile -Path ./src/psfoundrylocal.psd1
+          $tagVersion = '${{ steps.version.outputs.version }}'
+          if ($manifest.ModuleVersion -ne $tagVersion) {
+            throw "Tag version ($tagVersion) does not match manifest ModuleVersion ($($manifest.ModuleVersion))"
+          }
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          prerelease: ${{ github.event.inputs.prerelease || false }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ─────────────────────────────────────────────
+  publish:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish to PowerShell Gallery
+        shell: pwsh
+        env:
+          NUGET_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+        run: |
+          # Ensure TLS 1.2 (required by PowerShell Gallery)
+          [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+
+          # Preview the publish operation
+          Write-Host '::group::Publish-Module -WhatIf'
+          Publish-Module -Path ./src -NuGetApiKey $env:NUGET_API_KEY -WhatIf -Verbose
+          Write-Host '::endgroup::'
+
+          # Perform actual publish
+          Publish-Module -Path ./src -NuGetApiKey $env:NUGET_API_KEY -Verbose

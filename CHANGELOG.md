@@ -30,7 +30,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Sample script `samples/demo.ps1` demonstrating common workflows.
 
 ### Added
+
 - `Start-FoundryLocalChatSession` helper for launching interactive `foundry model run` chat sessions from PowerShell without parsing output.
+- GitHub Actions workflow (`.github/workflows/release.yml`) for automated validation, release creation, and PowerShell Gallery publishing.
+- Module `Description` field in manifest (required for PSGallery).
 
 ### Changed
 - Enabled `SupportsShouldProcess` on all state-changing cmdlets (`Save-`, `Start-`, `Stop-`, `Restart-`, `Set-`, `Remove-`) and verified `-WhatIf`/`-Confirm` behavior.

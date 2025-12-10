@@ -206,6 +206,12 @@ The following cmdlets support `-WhatIf` and `-Confirm`:
 - `Set-FoundryLocalCacheLocation`
 - `Remove-FoundryLocalCachedModel`
 
+### Interactive Chat
+
+For multi-turn, interactive chat sessions, use:
+
+- `Start-FoundryLocalChatSession` (wraps `foundry model run <model>` in interactive mode)
+
 ## Output Types
 
 The module returns strongly-typed objects for better pipeline integration:

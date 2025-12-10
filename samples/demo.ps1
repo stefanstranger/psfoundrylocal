@@ -4,25 +4,35 @@
 .DESCRIPTION
     This script shows common workflows for using the psfoundrylocal
     PowerShell module to interact with Foundry Local CLI.
+.NOTES
+    Author: Stefan Stranger
+    Date: December 2025
+.EXAMPLE
+    .\demo.ps1
+    Runs the full demonstration of psfoundrylocal module capabilities.
 #>
 
+[CmdletBinding()]
+param()
+
 # Import the module
-Import-Module psfoundrylocal
+Import-Module psfoundrylocal -Force
 
 #region Service Management
 
 # Check service status
-Write-Host "=== Service Status ===" -ForegroundColor Cyan
+Write-Host '=== Service Status ===' -ForegroundColor Cyan
 $status = Get-FoundryLocalService
 if ($status.IsRunning) {
-    Write-Host "Service is running at $($status.Endpoint)" -ForegroundColor Green
-    Write-Host "Process ID: $($status.ProcessId)"
+    Write-Verbose -Message ('Service is running at {0}' -f $status.Endpoint)
+    Write-Host ('Service is running at {0}' -f $status.Endpoint) -ForegroundColor Green
+    Write-Host ('Process ID: {0}' -f $status.ProcessId)
 }
 else {
-    Write-Host "Service is not running. Starting..." -ForegroundColor Yellow
+    Write-Host 'Service is not running. Starting...' -ForegroundColor Yellow
     $startResult = Start-FoundryLocalService
     if ($startResult.Success) {
-        Write-Host "Service started at $($startResult.Endpoint)" -ForegroundColor Green
+        Write-Host ('Service started at {0}' -f $startResult.Endpoint) -ForegroundColor Green
     }
 }
 
@@ -57,8 +67,8 @@ $modelInfo | Format-List
 # Check cache location
 Write-Host "`n=== Cache Location ===" -ForegroundColor Cyan
 $cacheLocation = Get-FoundryLocalCacheLocation
-Write-Host "Cache path: $($cacheLocation.Path)"
-Write-Host "Exists: $($cacheLocation.Exists)"
+Write-Host ('Cache path: {0}' -f $cacheLocation.Path)
+Write-Host ('Exists: {0}' -f $cacheLocation.Exists)
 
 # List cached models
 Write-Host "`n=== Cached Models ===" -ForegroundColor Cyan
@@ -67,7 +77,7 @@ if ($cachedModels) {
     $cachedModels | Format-Table Alias, ModelId -AutoSize
 }
 else {
-    Write-Host "No models cached locally." -ForegroundColor Yellow
+    Write-Host 'No models cached locally.' -ForegroundColor Yellow
 }
 
 #endregion
@@ -76,26 +86,30 @@ else {
 
 # Load a model into the service
 Write-Host "`n=== Loading Model ===" -ForegroundColor Cyan
-$loadResult = Start-FoundryLocalModel -Model 'phi-4-mini' -TimeToLive 300
+$loadParams = @{
+    Model      = 'phi-4-mini'
+    TimeToLive = 300
+}
+$loadResult = Start-FoundryLocalModel @loadParams
 if ($loadResult.Success) {
-    Write-Host "Model loaded successfully" -ForegroundColor Green
+    Write-Host 'Model loaded successfully' -ForegroundColor Green
 }
 else {
-    Write-Host "Load result: $($loadResult.Message)" -ForegroundColor Yellow
+    Write-Host ('Load result: {0}' -f $loadResult.Message) -ForegroundColor Yellow
 }
 
 # Check loaded models
 Write-Host "`n=== Loaded Models ===" -ForegroundColor Cyan
 $loadedModels = Get-FoundryLocalServiceModel
-Write-Host "Models loaded: $($loadedModels.ModelsLoaded)"
+Write-Host ('Models loaded: {0}' -f $loadedModels.ModelsLoaded)
 if ($loadedModels.Models) {
-    $loadedModels.Models | ForEach-Object { Write-Host "  - $_" }
+    $loadedModels.Models | ForEach-Object { Write-Host ('  - {0}' -f $_) }
 }
 
 # Unload the model
 Write-Host "`n=== Unloading Model ===" -ForegroundColor Cyan
 $unloadResult = Stop-FoundryLocalModel -Model 'phi-4-mini'
-Write-Host "Unload result: $($unloadResult.Message)"
+Write-Host ('Unload result: {0}' -f $unloadResult.Message)
 
 #endregion
 
@@ -103,19 +117,23 @@ Write-Host "Unload result: $($unloadResult.Message)"
 
 # Pipeline: Get GPU models larger than 2GB
 Write-Host "`n=== GPU Models > 2GB ===" -ForegroundColor Cyan
-Get-FoundryLocalModel -Filter 'device=GPU' | 
-    Where-Object { 
+Get-FoundryLocalModel -Filter 'device=GPU' |
+    Where-Object {
         $size = $_.FileSize -replace '[^\d.]', ''
-        [double]$size -gt 2 
+        [double]$size -gt 2
     } |
     Sort-Object { [double]($_.FileSize -replace '[^\d.]', '') } |
     Format-Table Alias, FileSize, License
 
 # Pipeline: Export model list to CSV
 Write-Host "`n=== Exporting Models to CSV ===" -ForegroundColor Cyan
-$exportPath = Join-Path $env:TEMP 'foundry-models.csv'
-Get-FoundryLocalModel | Export-Csv -Path $exportPath -NoTypeInformation
-Write-Host "Models exported to: $exportPath"
+$exportPath = Join-Path -Path $env:TEMP -ChildPath 'foundry-models.csv'
+$exportParams = @{
+    Path              = $exportPath
+    NoTypeInformation = $true
+}
+Get-FoundryLocalModel | Export-Csv @exportParams
+Write-Host ('Models exported to: {0}' -f $exportPath)
 
 #endregion
 

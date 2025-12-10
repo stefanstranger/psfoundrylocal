@@ -21,7 +21,7 @@ This module wraps the Foundry Local command-line interface using [Microsoft.Powe
 
 ## Installation
 
-### From PowerShell Gallery (coming soon)
+### From PowerShell Gallery
 
 ```powershell
 Install-Module -Name psfoundrylocal -Scope CurrentUser

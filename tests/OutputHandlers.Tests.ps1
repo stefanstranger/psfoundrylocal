@@ -9,15 +9,14 @@
 #>
 
 BeforeAll {
-    # Import the module for testing
-    $modulePath = Join-Path $PSScriptRoot '..\src\psfoundrylocal.psd1'
-    if (Test-Path $modulePath) {
-        Import-Module $modulePath -Force
+    # Dot-source the output handlers directly for testing
+    # These functions are embedded in the module but not exported,
+    # so we test them by sourcing the original file
+    $handlersPath = Join-Path $PSScriptRoot '../src/outputhandlers.ps1'
+    if (-not (Test-Path $handlersPath)) {
+        throw "Cannot find outputhandlers.ps1 at: $handlersPath"
     }
-    else {
-        # For development, dot-source the output handlers directly
-        . (Join-Path $PSScriptRoot '..\src\outputhandlers.ps1')
-    }
+    . $handlersPath
 }
 
 Describe 'Convert-FoundryLocalModelListOutput' {

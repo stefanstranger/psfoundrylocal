@@ -288,7 +288,11 @@ function Convert-FoundryLocalServiceStatusOutput {
     # Parse running status - check for running indicators (handles emoji encoding issues)
     # Patterns: "🟢 Service is Started on http://127.0.0.1:44549/, PID 19804!"
     #           "service is running on http://..."
-    if ($outputText -match 'running|Started|is running') {
+    # Check for "not running" first to avoid false positive from "running" substring
+    if ($outputText -match 'not running|stopped') {
+        $serviceStatus.IsRunning = $false
+    }
+    elseif ($outputText -match 'Started|is running') {
         $serviceStatus.IsRunning = $true
         # Try to parse endpoint if present
         if ($outputText -match 'http://([^/\s]+):(\d+)') {
@@ -298,9 +302,6 @@ function Convert-FoundryLocalServiceStatusOutput {
         if ($outputText -match 'PID\s*(\d+)') {
             $serviceStatus.ProcessId = [int]$Matches[1]
         }
-    }
-    elseif ($outputText -match 'not running|stopped') {
-        $serviceStatus.IsRunning = $false
     }
 
     return $serviceStatus

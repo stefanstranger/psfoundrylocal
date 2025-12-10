@@ -43,6 +43,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Removed the experimental `Invoke-FoundryLocalRun` Crescendo cmdlet in favor of the interactive `Start-FoundryLocalChatSession` function to better align with multi-turn chat behavior.
 
 ### Fixed
+
 - `Get-FoundryLocalCache` output handler to correctly parse the current `foundry cache list` table format (including wrapped lines and emoji/garbled characters), returning `psfoundrylocal.CachedModel` objects with `Alias` and `ModelId`.
 - Encoding issues by saving module files with UTF-8 BOM to handle non-ASCII CLI output.
 - Minor formatting and trailing whitespace issues flagged by `Invoke-ScriptAnalyzer`.
+- `Convert-FoundryLocalServiceStatusOutput` now correctly detects "not running" status (fixed regex ordering to avoid false positives).
+- Pester tests now dot-source `outputhandlers.ps1` directly for cross-platform compatibility in CI.

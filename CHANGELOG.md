@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.1.2] - 2025-12-12
+
+### Added
+- `Test-FoundryLocalUpdate` function exported in module manifest.
+- Pipeline examples in README documentation.
+- Utility section in README for `Test-FoundryLocalUpdate` cmdlet.
+- `psfoundrylocal.UpdateInfo` output type documented in README.
+
+### Fixed
+- `Test-FoundryLocalUpdate` was not visible because it was missing from `FunctionsToExport` in the module manifest.
+
 ## [0.1.1] - 2025-12-12
 
 ### Added

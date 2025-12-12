@@ -2194,4 +2194,10 @@ Original Command: foundry cache remove * --yes
 #>
 }
 
-
+# Dot-source public functions
+$publicPath = Join-Path -Path $PSScriptRoot -ChildPath 'public'
+if (Test-Path -Path $publicPath) {
+    Get-ChildItem -Path $publicPath -Filter '*.ps1' -File | ForEach-Object {
+        . $_.FullName
+    }
+}

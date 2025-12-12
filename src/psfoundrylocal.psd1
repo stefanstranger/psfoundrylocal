@@ -75,7 +75,8 @@ FunctionsToExport = 'Get-FoundryLocalModel', 'Get-FoundryLocalModelInfo',
                'Get-FoundryLocalServiceModel', 'Start-FoundryLocalService', 
                'Stop-FoundryLocalService', 'Restart-FoundryLocalService', 
                'Get-FoundryLocalCache', 'Get-FoundryLocalCacheLocation', 
-               'Set-FoundryLocalCacheLocation', 'Remove-FoundryLocalCachedModel'
+               'Set-FoundryLocalCacheLocation', 'Remove-FoundryLocalCachedModel',
+               'Test-FoundryLocalUpdate'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()

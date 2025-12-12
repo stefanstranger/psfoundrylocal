@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.1.1] - 2025-12-12
+
+### Added
+- `Test-FoundryLocalUpdate` function to check for Foundry Local CLI updates by comparing installed version with latest GitHub release tag.
+- Pipeline support for cmdlets - parameters now accept input via `ValueFromPipelineByPropertyName` using the `Alias` property.
+- GitHub Copilot instructions file (`.github/workflows/instructions/psfoundrylocal.instructions.md`) with coding standards and Crescendo guidance.
+
+### Changed
+- Updated Pester tests to check parameter metadata instead of invoking cmdlets with missing mandatory parameters (prevents interactive prompts during test runs).
+- Code style improvements to `Test-FoundryLocalUpdate` following instruction file guidelines (splatting, format operator, explicit parameter names).
+
+### Fixed
+- Parameter validation tests no longer prompt for input when testing mandatory parameters.
+
 ## [0.0.1] - 2025-12-10
 
 ### Added

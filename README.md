@@ -111,6 +111,12 @@ Get-FoundryLocalCacheLocation
 | `Set-FoundryLocalCacheLocation` | Changes the cache directory | `foundry cache cd <path>` |
 | `Remove-FoundryLocalCachedModel` | Removes a model from the cache | `foundry cache remove <model>` |
 
+### Utility
+
+| Cmdlet | Description | Foundry CLI |
+|--------|-------------|------------|
+| `Test-FoundryLocalUpdate` | Checks if a newer version of Foundry Local is available | `foundry --version` + GitHub API |
+
 ## Examples
 
 ### Filtering Models
@@ -144,6 +150,21 @@ Get-FoundryLocalModel -Filter 'device=GPU' |
 
 # Get MIT-licensed models
 Get-FoundryLocalModel | Where-Object { $_.License -eq 'MIT' }
+
+# Pipeline from cache to model info
+Get-FoundryLocalCache | Get-FoundryLocalModelInfo
+
+# Filter cached models and get details
+Get-FoundryLocalCache | Where-Object { $_.Alias -like 'phi*' } | Get-FoundryLocalModelInfo
+
+# Pipeline to load cached models (with -WhatIf to preview)
+Get-FoundryLocalCache | Where-Object { $_.Alias -eq 'phi-4-mini' } | Start-FoundryLocalModel -WhatIf
+
+# Pipeline to unload multiple models
+Get-FoundryLocalCache | Where-Object { $_.Alias -like 'qwen*' } | Stop-FoundryLocalModel -WhatIf
+
+# Pipeline to remove cached models
+Get-FoundryLocalCache | Where-Object { $_.Alias -like 'old-*' } | Remove-FoundryLocalCachedModel -WhatIf
 ```
 
 ### Service Workflow
@@ -177,6 +198,18 @@ To inspect the cache as objects, use:
 
 ```powershell
 Get-FoundryLocalCache | Format-Table Alias, ModelId -AutoSize
+```
+
+### Check for Updates
+
+```powershell
+# Check if a newer version of Foundry Local is available
+Test-FoundryLocalUpdate
+
+# Only show if update is available
+if ((Test-FoundryLocalUpdate).UpdateAvailable) {
+    Write-Host "A new version of Foundry Local is available!"
+}
 ```
 
 ### Using WhatIf and Confirm
@@ -221,6 +254,7 @@ The module returns strongly-typed objects for better pipeline integration:
 - `psfoundrylocal.ServiceStatus` - Service status from `Get-FoundryLocalService`
 - `psfoundrylocal.CachedModel` - Cached model info from `Get-FoundryLocalCache`
 - `psfoundrylocal.CacheLocation` - Cache path info from `Get-FoundryLocalCacheLocation`
+- `psfoundrylocal.UpdateInfo` - Update check result from `Test-FoundryLocalUpdate`
 
 ## Development
 

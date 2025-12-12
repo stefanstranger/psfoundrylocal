@@ -276,7 +276,8 @@ function Get-FoundryLocalModelInfo
 [CmdletBinding()]
 
 param(
-[Parameter(Mandatory=$true)]
+[Alias('Alias')]
+[Parameter(ValueFromPipelineByPropertyName=$true,Mandatory=$true)]
 [string]$Model,
 [ValidateSet('Auto', 'CPU', 'GPU', 'NPU')]
 [Parameter()]
@@ -445,7 +446,8 @@ function Save-FoundryLocalModel
 [CmdletBinding(SupportsShouldProcess=$true)]
 
 param(
-[Parameter(Mandatory=$true)]
+[Alias('Alias')]
+[Parameter(ValueFromPipelineByPropertyName=$true,Mandatory=$true)]
 [string]$Model,
 [ValidateSet('Auto', 'CPU', 'GPU', 'NPU')]
 [Parameter()]
@@ -628,7 +630,8 @@ function Start-FoundryLocalModel
 [CmdletBinding(SupportsShouldProcess=$true)]
 
 param(
-[Parameter(Mandatory=$true)]
+[Alias('Alias')]
+[Parameter(ValueFromPipelineByPropertyName=$true,Mandatory=$true)]
 [string]$Model,
 [ValidateSet('Auto', 'CPU', 'GPU', 'NPU')]
 [Parameter()]
@@ -798,7 +801,8 @@ function Stop-FoundryLocalModel
 [CmdletBinding(SupportsShouldProcess=$true)]
 
 param(
-[Parameter(Mandatory=$true)]
+[Alias('Alias')]
+[Parameter(ValueFromPipelineByPropertyName=$true,Mandatory=$true)]
 [string]$Model,
 [ValidateSet('Auto', 'CPU', 'GPU', 'NPU')]
 [Parameter()]
@@ -2042,7 +2046,8 @@ function Remove-FoundryLocalCachedModel
 [CmdletBinding(SupportsShouldProcess=$true)]
 
 param(
-[Parameter(Mandatory=$true)]
+[Alias('Alias')]
+[Parameter(ValueFromPipelineByPropertyName=$true,Mandatory=$true)]
 [string]$Model,
 [ValidateSet('Auto', 'CPU', 'GPU', 'NPU')]
 [Parameter()]

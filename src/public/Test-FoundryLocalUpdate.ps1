@@ -46,12 +46,11 @@ function Test-FoundryLocalUpdate {
     begin {
         # GitHub API URL for tags (releases/latest doesn't work if there are only tags, not releases)
         $gitHubApiUrl = 'https://api.github.com/repos/microsoft/Foundry-Local/tags'
-        $releasePageUrl = 'https://github.com/microsoft/Foundry-Local/releases'
     }
 
     process {
         # Get installed version
-        Write-Verbose "Getting installed Foundry Local version..."
+        Write-Verbose -Message 'Getting installed Foundry Local version...'
         
         if (-not (Get-Command -Name 'foundry' -ErrorAction SilentlyContinue)) {
             throw "Foundry Local is not installed or 'foundry' command is not in PATH."
@@ -61,37 +60,43 @@ function Test-FoundryLocalUpdate {
             $installedVersionOutput = & foundry --version 2>&1
             # Version format: 0.8.113+70167233c5 - extract just the version number before the +
             $installedVersion = ($installedVersionOutput -split '\+')[0].Trim()
-            Write-Verbose "Installed version: $installedVersion"
+            Write-Verbose -Message ('Installed version: {0}' -f $installedVersion)
         }
         catch {
-            throw "Failed to get installed Foundry Local version: $_"
+            throw ('Failed to get installed Foundry Local version: {0}' -f $_)
         }
 
         # Get latest release from GitHub
-        Write-Verbose "Checking latest release on GitHub..."
+        Write-Verbose -Message 'Checking latest release on GitHub...'
         
         try {
             $headers = @{
-                'Accept' = 'application/vnd.github.v3+json'
+                'Accept'     = 'application/vnd.github.v3+json'
                 'User-Agent' = 'psfoundrylocal-powershell-module'
             }
             
-            $response = Invoke-RestMethod -Uri $gitHubApiUrl -Headers $headers -Method Get -ErrorAction Stop
+            $restParams = @{
+                Uri         = $gitHubApiUrl
+                Headers     = $headers
+                Method      = 'Get'
+                ErrorAction = 'Stop'
+            }
+            $response = Invoke-RestMethod @restParams
             
             # Tags API returns an array, get the first (most recent) tag
             # Tag format: v0.8.113 - remove the 'v' prefix
             $latestTag = $response | Select-Object -First 1
             $latestVersion = $latestTag.name -replace '^v', ''
-            $releaseUrl = "https://github.com/microsoft/Foundry-Local/releases/tag/$($latestTag.name)"
+            $releaseUrl = ('https://github.com/microsoft/Foundry-Local/releases/tag/{0}' -f $latestTag.name)
             
-            Write-Verbose "Latest version: $latestVersion"
+            Write-Verbose -Message ('Latest version: {0}' -f $latestVersion)
         }
         catch {
-            throw "Failed to check latest release on GitHub: $_"
+            throw ('Failed to check latest release on GitHub: {0}' -f $_)
         }
 
         # Compare versions
-        Write-Verbose "Comparing versions..."
+        Write-Verbose -Message 'Comparing versions...'
         
         try {
             $installedVersionObj = [System.Version]::Parse($installedVersion)
@@ -100,7 +105,7 @@ function Test-FoundryLocalUpdate {
         }
         catch {
             # If version parsing fails, fall back to string comparison
-            Write-Verbose "Version parsing failed, using string comparison: $_"
+            Write-Verbose -Message ('Version parsing failed, using string comparison: {0}' -f $_)
             $updateAvailable = $latestVersion -ne $installedVersion
         }
 

@@ -78,7 +78,9 @@
           "OriginalPosition": 0,
           "ParameterType": "string",
           "Description": "Name or alias of the model to get information about.",
-          "Mandatory": true
+          "Mandatory": true,
+          "ValueFromPipelineByPropertyName": true,
+          "Aliases": ["Alias"]
         },
         {
           "Name": "Device",
@@ -139,7 +141,9 @@
           "OriginalPosition": 0,
           "ParameterType": "string",
           "Description": "Name or alias of the model to download.",
-          "Mandatory": true
+          "Mandatory": true,
+          "ValueFromPipelineByPropertyName": true,
+          "Aliases": ["Alias"]
         },
         {
           "Name": "Device",
@@ -207,7 +211,9 @@
           "OriginalPosition": 0,
           "ParameterType": "string",
           "Description": "Name or alias of the model to load.",
-          "Mandatory": true
+          "Mandatory": true,
+          "ValueFromPipelineByPropertyName": true,
+          "Aliases": ["Alias"]
         },
         {
           "Name": "Device",
@@ -269,7 +275,9 @@
           "OriginalPosition": 0,
           "ParameterType": "string",
           "Description": "Name or alias of the model to unload.",
-          "Mandatory": true
+          "Mandatory": true,
+          "ValueFromPipelineByPropertyName": true,
+          "Aliases": ["Alias"]
         },
         {
           "Name": "Device",
@@ -574,7 +582,9 @@
           "OriginalPosition": 0,
           "ParameterType": "string",
           "Description": "Model ID or alias to delete. Use '*' to delete all cached models.",
-          "Mandatory": true
+          "Mandatory": true,
+          "ValueFromPipelineByPropertyName": true,
+          "Aliases": ["Alias"]
         },
         {
           "Name": "Device",

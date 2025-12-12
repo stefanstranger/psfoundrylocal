@@ -194,7 +194,11 @@ Describe 'Get-FoundryLocalServiceModel' -Skip:(-not $script:foundryAvailable) {
 Describe 'Parameter Validation' {
     Context 'Get-FoundryLocalModelInfo' {
         It 'Should require Model parameter' {
-            { Get-FoundryLocalModelInfo } | Should -Throw
+            $cmd = Get-Command Get-FoundryLocalModelInfo
+            $modelParam = $cmd.Parameters['Model']
+            $modelParam.Attributes | 
+                Where-Object { $_ -is [System.Management.Automation.ParameterAttribute] -and $_.Mandatory } |
+                Should -Not -BeNullOrEmpty
         }
 
         It 'Should accept Model parameter' {
@@ -212,7 +216,11 @@ Describe 'Parameter Validation' {
 
     Context 'Save-FoundryLocalModel' {
         It 'Should require Model parameter' {
-            { Save-FoundryLocalModel } | Should -Throw
+            $cmd = Get-Command Save-FoundryLocalModel
+            $modelParam = $cmd.Parameters['Model']
+            $modelParam.Attributes | 
+                Where-Object { $_ -is [System.Management.Automation.ParameterAttribute] -and $_.Mandatory } |
+                Should -Not -BeNullOrEmpty
         }
 
         It 'Should have Force switch parameter' {
@@ -223,7 +231,11 @@ Describe 'Parameter Validation' {
 
     Context 'Start-FoundryLocalModel' {
         It 'Should require Model parameter' {
-            { Start-FoundryLocalModel } | Should -Throw
+            $cmd = Get-Command Start-FoundryLocalModel
+            $modelParam = $cmd.Parameters['Model']
+            $modelParam.Attributes | 
+                Where-Object { $_ -is [System.Management.Automation.ParameterAttribute] -and $_.Mandatory } |
+                Should -Not -BeNullOrEmpty
         }
 
         It 'Should have TimeToLive parameter' {
@@ -234,7 +246,11 @@ Describe 'Parameter Validation' {
 
     Context 'Stop-FoundryLocalModel' {
         It 'Should require Model parameter' {
-            { Stop-FoundryLocalModel } | Should -Throw
+            $cmd = Get-Command Stop-FoundryLocalModel
+            $modelParam = $cmd.Parameters['Model']
+            $modelParam.Attributes | 
+                Where-Object { $_ -is [System.Management.Automation.ParameterAttribute] -and $_.Mandatory } |
+                Should -Not -BeNullOrEmpty
         }
 
         It 'Should have All switch parameter' {
@@ -245,13 +261,21 @@ Describe 'Parameter Validation' {
 
     Context 'Set-FoundryLocalCacheLocation' {
         It 'Should require Path parameter' {
-            { Set-FoundryLocalCacheLocation } | Should -Throw
+            $cmd = Get-Command Set-FoundryLocalCacheLocation
+            $pathParam = $cmd.Parameters['Path']
+            $pathParam.Attributes | 
+                Where-Object { $_ -is [System.Management.Automation.ParameterAttribute] -and $_.Mandatory } |
+                Should -Not -BeNullOrEmpty
         }
     }
 
     Context 'Remove-FoundryLocalCachedModel' {
         It 'Should require Model parameter' {
-            { Remove-FoundryLocalCachedModel } | Should -Throw
+            $cmd = Get-Command Remove-FoundryLocalCachedModel
+            $modelParam = $cmd.Parameters['Model']
+            $modelParam.Attributes | 
+                Where-Object { $_ -is [System.Management.Automation.ParameterAttribute] -and $_.Mandatory } |
+                Should -Not -BeNullOrEmpty
         }
 
         It 'Should support ShouldProcess' {

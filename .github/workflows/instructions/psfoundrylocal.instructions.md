@@ -105,6 +105,7 @@ To fix Crescendo-related warnings:
 - Never skip parameter validation
 - Never create functions without comment-based help
 - Never commit code that fails `Invoke-ScriptAnalyzer`
+- Never update the GUID in the module manifest (`psfoundrylocal.psd1`)
 
 ## Code Style Examples
 

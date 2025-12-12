@@ -266,13 +266,36 @@ This project uses GitHub Actions for continuous integration and deployment:
 
 ### Creating a Release
 
-1. Update `ModuleVersion` in `src/psfoundrylocal.psd1`
-2. Update `CHANGELOG.md`
-3. Commit and push to `main`
-4. Tag and push:
-   ```bash
-   git tag v0.1.0
-   git push origin v0.1.0
+1. Create a release branch from `main`:
+   ```powershell
+   git checkout main
+   git pull origin main
+   git checkout -b release/v0.1.1
+   ```
+
+2. Update `ModuleVersion` in `src/psfoundrylocal.psd1`
+
+3. Update `CHANGELOG.md` with the new version and changes
+
+4. Commit and push the release branch:
+   ```powershell
+   git add -A
+   git commit -m "Release v0.1.1"
+   git push origin release/v0.1.1
+   ```
+
+5. Create a Pull Request on GitHub:
+   - Go to https://github.com/stefanstranger/psfoundrylocal
+   - Click "Compare & pull request" for the release branch
+   - Set base: `main` ← compare: `release/v0.1.1`
+   - Review changes and merge the PR
+
+6. Tag and push the release on main:
+   ```powershell
+   git checkout main
+   git pull origin main
+   git tag v0.1.1
+   git push origin v0.1.1
    ```
 
 The workflow will validate, create a GitHub Release, and publish to the PowerShell Gallery.
